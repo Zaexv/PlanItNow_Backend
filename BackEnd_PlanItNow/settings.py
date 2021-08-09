@@ -25,13 +25,14 @@ SECRET_KEY = '4guo7(5ehg9q+11tlihq7d9zi3c=e#v+(f#$0um$d*=56d9#zk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] #TODO Change
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'plans',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'graphql_jwt',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'BackEnd_PlanItNow.urls'
@@ -124,5 +127,15 @@ STATIC_URL = '/static/'
 #GraphQL
 
 GRAPHENE = {
-    "SCHEMA": "BackEnd_PlanItNow.schema.schema"
+    "SCHEMA": "BackEnd_PlanItNow.schema.schema",
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
 }
+
+#Authentication
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

@@ -1,28 +1,17 @@
 import graphene
-from graphene_django import DjangoObjectType
-
-from plans.models import Plan
-
-
-class PlanType(DjangoObjectType):
-    class Meta:
-        model = Plan
-        fields = ('id',
-                  'title',
-                  'description',
-                  'location',
-                  'init_date',
-                  'init_hour',
-                  'end_hour',
-                  'is_public')
+import graphql_jwt
+import plans.schema
+import users.schema
 
 
-class Query(graphene.ObjectType):
-    all_plans = graphene.List(PlanType)
-
-    @staticmethod
-    def resolve_all_plans(root,info):
-        return Plan.objects.all()
+class Query(plans.schema.Query, users.schema.Query, graphene.ObjectType):
+    pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(users.schema.Mutation, graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
