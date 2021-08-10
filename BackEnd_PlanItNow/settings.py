@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*'] #TODO Change
 INSTALLED_APPS = [
     'plans',
     'users',
+    'userprofiles',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
