@@ -24,11 +24,11 @@ class Plan(models.Model):
     init_hour = models.TimeField(null=False)
     """What time do the plan ends?"""
     end_hour = models.TimeField(null=False)
-    """Is the plan for everyone or just for firends?
+    """Is the plan for everyone or just for friends?
         if is_public everyone is able to see the plan
         otherwise only friends and invited people are able to see it
     """
-    is_public = models.BooleanField()
+    is_public = models.BooleanField(null=True)
 
 
 # TODO Develop the other models
