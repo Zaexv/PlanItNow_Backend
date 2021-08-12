@@ -29,6 +29,9 @@ class Plan(models.Model):
         otherwise only friends and invited people are able to see it
     """
     is_public = models.BooleanField(null=True)
+    """Picture plan URL"""
+    url_plan_picture = models.CharField(max_length=512,null=True)
+
 
 
 # TODO Develop the other models

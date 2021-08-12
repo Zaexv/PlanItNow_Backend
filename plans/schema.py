@@ -15,6 +15,7 @@ class PlanType(DjangoObjectType):
                   'init_hour',
                   'end_hour',
                   'is_public',
+                  'url_plan_picture',
                   'owner')
 
 
@@ -29,6 +30,7 @@ class CreatePlan(graphene.Mutation):
         init_hour = graphene.Time(required=True)
         end_hour = graphene.Time(required=True)
         is_public = graphene.Boolean(required=False)
+        url_plan_picture = graphene.String(required=False)
 
     @staticmethod
     def mutate(self,
@@ -39,7 +41,8 @@ class CreatePlan(graphene.Mutation):
                init_date,
                init_hour,
                end_hour,
-               is_public=False):
+               is_public=False,
+               url_plan_picture=""):
 
         user = info.context.user
 
@@ -53,7 +56,8 @@ class CreatePlan(graphene.Mutation):
                     init_date=init_date,
                     init_hour=init_hour,
                     end_hour=end_hour,
-                    is_public=is_public)
+                    is_public=is_public,
+                    url_plan_picture=url_plan_picture)
         plan.owner = user
         plan.save()
         return CreatePlan(plan=plan)

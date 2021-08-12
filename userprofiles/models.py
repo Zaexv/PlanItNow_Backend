@@ -14,3 +14,5 @@ class UserProfile(models.Model):
     biography = models.CharField(max_length=1024)
     """The common residence of the user"""
     residence = models.CharField(max_length=256)
+    """URL of Profile Picture"""
+    url_profile_picture = models.CharField(max_length=512)
