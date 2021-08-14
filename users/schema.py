@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from userprofiles.schema import UserProfileType
 
 import graphene
 from graphene_django import DjangoObjectType
@@ -9,8 +10,8 @@ class UserType(DjangoObjectType):
         model = get_user_model()
         fields = ('id',
                   'username',
+                  'user_profile',
                   )
-
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
