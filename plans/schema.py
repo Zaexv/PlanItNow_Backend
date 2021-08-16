@@ -70,13 +70,11 @@ class DeletePlan(graphene.Mutation):
         id = graphene.Int(required=True)
 
     @staticmethod
-    def mutate(self,
-               info,
-               id):
+    def mutate(self, info, id):
         user = info.context.user
 
         if user.is_anonymous:
-            print("Error, user not logged")
+            print('Error, user not logged')
             raise Exception('Must be logged to DELETE a plan')
 
         plan = Plan.objects.get(pk=id)
@@ -84,7 +82,7 @@ class DeletePlan(graphene.Mutation):
         if plan.owner.id == user.id:
             plan.delete()
         else:
-            print("Error, not the same user")
+            print('Error, not the same user')
             raise Exception('MUST BE THE CREATOR TO DELETE THIS PLAN')
 
         return DeletePlan(ok=True)

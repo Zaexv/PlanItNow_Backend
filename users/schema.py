@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from userprofiles.schema import UserProfileType
+from userprofiles.models import UserProfile
 
 import graphene
 from graphene_django import DjangoObjectType
@@ -12,6 +13,7 @@ class UserType(DjangoObjectType):
                   'username',
                   'user_profile',
                   )
+
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -27,8 +29,13 @@ class CreateUser(graphene.Mutation):
             username=username,
             email=email,
         )
+        # Todo añadir user profile a la hora de crear usuario
         user.set_password(password)
         user.save()
+
+        user_profile = UserProfile()
+        user_profile.user = user
+        user_profile.save()
 
         return CreateUser(user=user)
 

@@ -32,14 +32,14 @@ class FriendRequest(models.Model):
     is_accepted = models.BooleanField(default=False)
     """Status of the friend Request regarding ENUM"""
     request_status = models.CharField(choices=FriendRequestStatus.choices(),
-                                      default=FriendRequestStatus.PENDING,
+                                      default=FriendRequestStatus.PENDING.value,
                                       max_length=64)
 
     def accept_friend_request(self):
         """Accepts this friend request, adding as a friend to both users """
-        if self.request_status != FriendRequestStatus.REJECTED:
+        if self.request_status != FriendRequestStatus.REJECTED.value:
             self.is_accepted = True
-            self.request_status = FriendRequestStatus.ACCEPTED
+            self.request_status = FriendRequestStatus.ACCEPTED.value
             self.from_user.friends.add(self.to_user)
             self.from_user.save()
             self.to_user.friends.add(self.from_user)
