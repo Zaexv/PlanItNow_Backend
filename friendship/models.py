@@ -50,7 +50,7 @@ class FriendRequest(models.Model):
         """Rejects friendship from one of both users. This will not allow to perform any further request of
         friendship """
         self.is_accepted = False
-        self.request_status = FriendRequestStatus.REJECTED
+        self.request_status = FriendRequestStatus.REJECTED.value
         self.save()
 
     def delete_friendship(self):

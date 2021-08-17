@@ -13,7 +13,8 @@ class FriendRequestType(DjangoObjectType):
                   'from_user',
                   'to_user',
                   'request_status',
-                  'is_accepted')
+                  'is_accepted',
+                  'created_at')
 
 
 class SendFriendRequest(graphene.Mutation):
@@ -79,7 +80,7 @@ class RejectFriendRequest(graphene.Mutation):
         if user.is_anonymous:
             raise Exception('Must be logged to reject a FriendRequest')
 
-        friend_request = FriendRequest.objects.get(pk=id)
+        friend_request = FriendRequest.objects.get(pk=fr_id)
 
         if friend_request.to_user.id != user.id:
             raise Exception('Cannot reject other user requests!')
@@ -98,9 +99,7 @@ class Query(graphene.ObjectType):
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
-        return FriendRequest.objects.filter(to_user=user.id,
-                                            is_accepted=False,
-                                            request_status=FriendRequestStatus.PENDING.value)
+        return FriendRequest.objects.filter(to_user=user.id)
 
     @staticmethod
     def resolve_sent_friend_requests(root, info):
@@ -115,3 +114,4 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     send_friend_request = SendFriendRequest.Field()
     accept_friend_request = AcceptFriendRequest.Field()
+    reject_friend_request = RejectFriendRequest.Field()
