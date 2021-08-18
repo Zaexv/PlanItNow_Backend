@@ -30,8 +30,12 @@ class Plan(models.Model):
     """
     is_public = models.BooleanField(null=True)
     """Picture plan URL"""
-    url_plan_picture = models.CharField(max_length=512,null=True)
+    url_plan_picture = models.CharField(max_length=512, null=True)
 
+    class Meta:
+        ordering = ('init_date',
+                    'init_hour',
+                    'end_hour')
 
 
 # TODO Develop the other models

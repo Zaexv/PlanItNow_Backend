@@ -108,7 +108,7 @@ class Query(graphene.ObjectType):
             raise Exception("Not logged in!")
         return FriendRequest.objects.filter(from_user=user.id,
                                             is_accepted=False,
-                                            )
+                                            ).order_by('-created_at')
 
 
 class Mutation(graphene.ObjectType):

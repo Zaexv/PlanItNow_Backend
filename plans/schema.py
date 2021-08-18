@@ -1,7 +1,9 @@
 import graphene
 
+from datetime import date
 from graphene_django import DjangoObjectType
 from plans.models import Plan
+from userprofiles.models import UserProfile
 from django.db.models import Q
 
 
@@ -91,6 +93,7 @@ class DeletePlan(graphene.Mutation):
 class Query(graphene.ObjectType):
     all_plans = graphene.List(PlanType)
     detailed_plan = graphene.Field(PlanType, id=graphene.Int(required=True))
+    recommended_or_search = graphene.List(PlanType, search_string=graphene.String(required=False))
 
     @staticmethod
     def resolve_detailed_plan(root, info, id):
@@ -103,11 +106,46 @@ class Query(graphene.ObjectType):
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
-        return Plan.objects.filter(
-            Q(owner__id=user.id) | Q(is_public=True)
-        ).order_by('-init_date',
-                   '-init_hour',
-                   '-end_hour')
+
+        profile = UserProfile.objects.get(pk=user.id)
+        friend_ids = profile.friends.values_list('id', flat=True)
+        today = date.today()
+        return Plan.objects.filter((
+                                           Q(owner__id=user.id) |
+                                           Q(is_public=True) |
+                                           Q(owner__id__in=friend_ids)
+                                   )
+                                   and
+                                   (
+                                       Q(init_date__gte=today)
+                                   )
+                                   )
+
+    @staticmethod
+    def resolve_recommended_or_search(root, info, search_string):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+
+        profile = UserProfile.objects.get(pk=user.id)
+        friend_ids = profile.friends.values_list('id', flat=True)
+
+        if search_string:
+            result = Plan.objects.filter((
+                                            Q(is_public=True) |
+                                            Q(owner__id__in=friend_ids)
+                                    )
+                                    and
+                                    (
+                                            Q(title__icontains=search_string) |
+                                            Q(description__icontains=search_string)
+                                    )
+                                    )
+        else:
+            result = Plan.objects.filter(
+                Q(is_public=True) |
+                Q(owner__id__in=friend_ids))
+        return result
 
 
 class Mutation(graphene.ObjectType):
