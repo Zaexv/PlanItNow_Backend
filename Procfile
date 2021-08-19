@@ -1,1 +1,1 @@
-web: unicorn BackEnd_PlanItNow.wsgi --log-file -
+web: gunicorn BackEnd_PlanItNow.wsgi --log-file -
