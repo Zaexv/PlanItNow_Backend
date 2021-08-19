@@ -114,8 +114,7 @@ class Query(graphene.ObjectType):
                                            Q(owner__id=user.id) |
                                            Q(is_public=True) |
                                            Q(owner__id__in=friend_ids)
-                                   )
-                                   and
+                                   ),
                                    (
                                        Q(init_date__gte=today)
                                    )
@@ -132,10 +131,10 @@ class Query(graphene.ObjectType):
 
         if search_string:
             result = Plan.objects.filter((
+                                            Q(owner__id=user.id) |
                                             Q(is_public=True) |
                                             Q(owner__id__in=friend_ids)
-                                    )
-                                    and
+                                    ),
                                     (
                                             Q(title__icontains=search_string) |
                                             Q(description__icontains=search_string)
@@ -143,6 +142,7 @@ class Query(graphene.ObjectType):
                                     )
         else:
             result = Plan.objects.filter(
+                Q(owner__id=user.id) |
                 Q(is_public=True) |
                 Q(owner__id__in=friend_ids))
         return result
