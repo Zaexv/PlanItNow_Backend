@@ -128,5 +128,6 @@ wordcloud==1.8.1
 psycopg2-binary
 wordnet==0.0.1b2
 python-decouple
+whitenoise
 dj-config-url~=0.1.1
 dj-database-url
