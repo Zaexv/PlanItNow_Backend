@@ -24,4 +24,10 @@ class Migration(migrations.Migration):
                 ('is_public', models.BooleanField()),
             ],
         ),
+        migrations.CreateModel(
+            name='PlanParticipation',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+            ],
+        ),
     ]
