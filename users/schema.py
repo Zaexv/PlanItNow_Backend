@@ -16,25 +16,38 @@ class UserType(DjangoObjectType):
 
 
 class CreateUser(graphene.Mutation):
+    """Register a user in the backend platform. This will create a very basic userprofile with some data too"""
     user = graphene.Field(UserType)
 
     class Arguments:
+        """Minimum arguments"""
         username = graphene.String(required=True)
         password = graphene.String(required=True)
         email = graphene.String(required=True)
+        """User profile related arguments"""
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
+        birth_date = graphene.Date(required=True)
 
     @staticmethod
-    def mutate(self, info, username, password, email):
+    def mutate(self, info, username, password, email, first_name, last_name, birth_date):
+
+        if not(username and password and email and first_name and last_name and birth_date):
+            raise Exception("Missing required fields")
+
         user = get_user_model()(
             username=username,
             email=email,
+            first_name=first_name,
+            last_name=last_name
         )
-        # Todo añadir user profile a la hora de crear usuario
+
         user.set_password(password)
         user.save()
 
         user_profile = UserProfile()
         user_profile.user = user
+        user_profile.birth_date = birth_date
         user_profile.save()
 
         return CreateUser(user=user)
