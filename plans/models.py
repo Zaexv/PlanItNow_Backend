@@ -15,8 +15,12 @@ class Plan(models.Model):
     # Attributes
     """Plan Title"""
     title = models.CharField(max_length=256, null=False)
+    """Plan English Title for recommendation purpose"""
+    english_title = models.CharField(max_length=256, null=False, default="pending translation")
     """Plan description to add additional information"""
     description = models.CharField(max_length=1024)
+    """Plan english description for recommendation purpose"""
+    english_description = models.CharField(max_length=1024,default="pending translation")
     """Plan location in text format, where is the plan going to be?"""
     location = models.CharField(max_length=128, null=False)
     """When does the plan begins?"""
