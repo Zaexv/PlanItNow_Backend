@@ -47,6 +47,7 @@ class CreatePlan(graphene.Mutation):
         max_participants = graphene.Int(required=False)
         is_public = graphene.Boolean(required=False)
         url_plan_picture = graphene.String(required=False)
+        max_participants = graphene.Int(required=False)
 
     @staticmethod
     def mutate(self,
@@ -72,7 +73,7 @@ class CreatePlan(graphene.Mutation):
                     init_date=init_date,
                     init_hour=init_hour,
                     end_hour=end_hour,
-                    max_participants=5,
+                    max_participants=max_participants,
                     is_public=is_public,
                     url_plan_picture=url_plan_picture)
         plan.owner = user
@@ -138,7 +139,7 @@ class ParticipateInPlan(graphene.Mutation):
 
 
 class Query(graphene.ObjectType):
-    all_plans = graphene.List(PlanType)
+    all_plans = graphene.List(PlanType, is_diary=graphene.Boolean(required=False, default_value=True))
     detailed_plan = graphene.Field(PlanType, id=graphene.Int(required=True))
     recommended_or_search = graphene.List(PlanType, search_string=graphene.String(required=False))
 
@@ -149,23 +150,33 @@ class Query(graphene.ObjectType):
         return Plan.objects.get(pk=id)
 
     @staticmethod
-    def resolve_all_plans(root, info):
+    def resolve_all_plans(root, info, is_diary):
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
 
         profile = UserProfile.objects.get(pk=user.id)
-        friend_ids = profile.friends.values_list('id', flat=True)
         today = date.today()
-        return Plan.objects.filter((
-                Q(owner__id=user.id) |
-                Q(is_public=True) |
-                Q(owner__id__in=friend_ids)
-        ),
-            (
-                Q(init_date__gte=today)
+        if is_diary:
+            return Plan.objects.filter((
+                    Q(owner__id=user.id) |
+                    Q(participating_plan__participant_user=profile)
+                ),
+                (
+                    Q(init_date__gte=today)
+                )
             )
-        )
+        else:
+            friend_ids = profile.friends.values_list('id', flat=True)
+            return Plan.objects.filter((
+                    Q(owner__id=user.id) |
+                    Q(is_public=True) |
+                    Q(owner__id__in=friend_ids)
+            ),
+                (
+                    Q(init_date__gte=today)
+                )
+            )
 
     @staticmethod
     def resolve_recommended_or_search(root, info, search_string):
@@ -175,7 +186,7 @@ class Query(graphene.ObjectType):
 
         profile = UserProfile.objects.get(pk=user.id)
         friend_ids = profile.friends.values_list('id', flat=True)
-
+        today = date.today()
         if search_string:
             result = Plan.objects.filter((
                     Q(owner__id=user.id) |
@@ -185,13 +196,20 @@ class Query(graphene.ObjectType):
                 (
                         Q(title__icontains=search_string) |
                         Q(description__icontains=search_string)
+                ),
+                (
+                    Q(init_date__gte=today)
                 )
             )
         else:
             result = Plan.objects.filter(
                 Q(owner__id=user.id) |
                 Q(is_public=True) |
-                Q(owner__id__in=friend_ids))
+                Q(owner__id__in=friend_ids),
+                (
+                    Q(init_date__gte=today)
+                )
+            )
         return result
 
 

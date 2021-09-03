@@ -23,7 +23,7 @@ class Distance(models.Model):
 
 
 class Lemma(models.Model):
-    """Creation date of the lema"""
+    """Creation date of the lemma"""
     created_at = models.DateTimeField(auto_now_add=True)
     """Last time the object was updated"""
     updated_at = models.DateTimeField(auto_now=True)
