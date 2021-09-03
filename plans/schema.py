@@ -165,7 +165,7 @@ class Query(graphene.ObjectType):
                 (
                     Q(init_date__gte=today)
                 )
-            )
+            ).distinct()
         else:
             friend_ids = profile.friends.values_list('id', flat=True)
             return Plan.objects.filter((
@@ -176,7 +176,7 @@ class Query(graphene.ObjectType):
                 (
                     Q(init_date__gte=today)
                 )
-            )
+            ).distinct()
 
     @staticmethod
     def resolve_recommended_or_search(root, info, search_string):
