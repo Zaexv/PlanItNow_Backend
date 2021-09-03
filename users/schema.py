@@ -47,6 +47,7 @@ class CreateUser(graphene.Mutation):
 
         user_profile = UserProfile()
         user_profile.user = user
+        user_profile.url_profile_picture = "https://i2.wp.com/aumentada.net/wp-content/uploads/2015/05/user.png"
         user_profile.birth_date = birth_date
         user_profile.save()
 
