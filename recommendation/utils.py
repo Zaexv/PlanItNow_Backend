@@ -59,8 +59,8 @@ def get_lemmas(text):
     all_words = word_tokenize(text)
 
     is_noun = lambda pos: pos[:2] == 'NN'
-    is_verb = lambda pos: pos[:2] == 'VBP'
-    nouns = [word for (word, pos) in nltk.pos_tag(all_words) if (is_noun(pos) | is_verb(pos)) ]
+    is_verb = lambda pos: pos[:2] == 'VBP' #| pos[:2] == 'VB'
+    nouns = [word for (word, pos) in nltk.pos_tag(all_words) if (is_noun(pos) | is_verb(pos))]
 
     text_without_stop = ''
 
