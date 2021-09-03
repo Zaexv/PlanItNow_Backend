@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'users',
     'userprofiles',
     'friendship',
+    'recommendation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

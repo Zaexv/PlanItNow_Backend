@@ -1,3 +1,4 @@
+from userprofiles.models import UserProfile
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -14,8 +15,12 @@ class Plan(models.Model):
     # Attributes
     """Plan Title"""
     title = models.CharField(max_length=256, null=False)
+    """Plan English Title for recommendation purpose"""
+    english_title = models.CharField(max_length=256, null=False, default="pending translation")
     """Plan description to add additional information"""
     description = models.CharField(max_length=1024)
+    """Plan english description for recommendation purpose"""
+    english_description = models.CharField(max_length=1024,default="pending translation")
     """Plan location in text format, where is the plan going to be?"""
     location = models.CharField(max_length=128, null=False)
     """When does the plan begins?"""
@@ -29,6 +34,8 @@ class Plan(models.Model):
         otherwise only friends and invited people are able to see it
     """
     is_public = models.BooleanField(null=True)
+    """Max participants in a plan"""
+    max_participants = models.IntegerField(blank=True, null=True, default=5)
     """Picture plan URL"""
     url_plan_picture = models.CharField(max_length=512, null=True)
 
@@ -38,6 +45,22 @@ class Plan(models.Model):
                     'end_hour')
 
 
-# TODO Develop the other models
 class PlanParticipation(models.Model):
-    pass
+    """Creation date of the request"""
+    created_at = models.DateTimeField(auto_now_add=True)
+    """Last time the object was updated"""
+    updated_at = models.DateTimeField(auto_now=True)
+    """Stores the user who is participating in plan"""
+    participant_user = models.ForeignKey(
+        UserProfile, related_name="participant_user", on_delete=models.CASCADE,
+    )
+    """Stores the plan on which user is participating"""
+    participating_plan = models.ForeignKey(
+        Plan, related_name="participating_plan", on_delete=models.CASCADE,
+    )
+    """Did the user like the plan?"""
+    user_likes = models.BooleanField(default=True)
+
+    def delete_participation(self):
+        """Delete this participation"""
+        self.delete()
