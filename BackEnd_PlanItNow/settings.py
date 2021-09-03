@@ -90,7 +90,7 @@ DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }a
+    }
 }
 '''
 import dj_database_url
