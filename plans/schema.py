@@ -188,17 +188,21 @@ class Query(graphene.ObjectType):
         friend_ids = profile.friends.values_list('id', flat=True)
         today = date.today()
         if search_string:
-            result = Plan.objects.filter((
+            result = Plan.objects.filter(
+                (
                     Q(owner__id=user.id) |
                     Q(is_public=True) |
                     Q(owner__id__in=friend_ids)
-            ),
+                ),
                 (
                         Q(title__icontains=search_string) |
                         Q(description__icontains=search_string)
                 ),
                 (
                     Q(init_date__gte=today)
+                ),
+                (
+                    Q(max_participants__gte=1)
                 )
             )
         else:
@@ -208,6 +212,9 @@ class Query(graphene.ObjectType):
                 Q(owner__id__in=friend_ids),
                 (
                     Q(init_date__gte=today)
+                ),
+                (
+                    Q(max_participants__gte=1)
                 )
             )
         return result
