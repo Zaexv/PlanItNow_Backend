@@ -170,8 +170,7 @@ class Query(graphene.ObjectType):
             friend_ids = profile.friends.values_list('id', flat=True)
             return Plan.objects.filter((
                     Q(owner__id=user.id) |
-                    Q(is_public=True) |
-                    Q(owner__id__in=friend_ids)
+                    Q(participating_plan__participant_user=profile)
             ),
                 (
                     Q(init_date__gte=today)

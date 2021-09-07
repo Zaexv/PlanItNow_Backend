@@ -25,7 +25,7 @@ from nltk.corpus import wordnet as wn
 def translateAllPlans():
     for plan in Plan.objects.all():
         print("\t Traduciendo plan...{plan.id}")
-        english_title = GoogleTranslator(source='auto', target='en').translate(text=plan.title)
+        english_title = GoogleTranslator(source='auto', target='en').translate(text=plan.title+"")
         print(english_title)
 
         english_description = GoogleTranslator(
@@ -74,6 +74,8 @@ def get_lemmas(text):
 
     lemmatizer = WordNetLemmatizer()
 
+
+    # Ver cómo lematizar según categoría
     lemmas = words_lemma = [lemmatizer.lemmatize(word) for word in words_without_stop]
 
     return lemmas
