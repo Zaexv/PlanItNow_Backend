@@ -139,7 +139,7 @@ class ParticipateInPlan(graphene.Mutation):
 
 
 class Query(graphene.ObjectType):
-    all_plans = graphene.List(PlanType, is_diary=graphene.Boolean(required=False, default_value=True))
+    all_plans = graphene.List(PlanType, is_diary=graphene.Boolean(required=False, default_value=False))
     detailed_plan = graphene.Field(PlanType, id=graphene.Int(required=True))
     recommended_or_search = graphene.List(PlanType, search_string=graphene.String(required=False))
 
