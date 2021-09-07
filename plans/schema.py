@@ -163,7 +163,7 @@ class Query(graphene.ObjectType):
                     Q(participating_plan__participant_user=profile)
                 ),
                 (
-                    Q(init_date__gte=today)
+                    Q(init_date__lte=today)
                 )
             ).distinct()
         else:
