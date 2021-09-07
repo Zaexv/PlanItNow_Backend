@@ -1,5 +1,6 @@
 from django.db import models
 from plans.models import Plan
+from userprofiles.models import UserProfile
 
 
 class Distance(models.Model):
@@ -19,6 +20,26 @@ class Distance(models.Model):
     )
 
     """Distance between plans. This is a calculated value. -1.0 is the non active value"""
+    distance = models.FloatField(default=-1.0)
+
+
+class UserDistance(models.Model):
+    """Creation date of the distance"""
+    created_at = models.DateTimeField(auto_now_add=True)
+    """Last time the object was updated"""
+    updated_at = models.DateTimeField(auto_now=True)
+
+    """First plan created"""
+    user = models.ForeignKey(
+        UserProfile, related_name="user_distance", on_delete=models.CASCADE,
+    )
+
+    """Newer plan"""
+    plan = models.ForeignKey(
+        Plan, related_name="plan_user_distance", on_delete=models.CASCADE,
+    )
+
+    """Distance between user and plan. This is a calculated value. -1.0 is the non active value"""
     distance = models.FloatField(default=-1.0)
 
 
