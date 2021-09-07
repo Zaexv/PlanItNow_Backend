@@ -161,11 +161,11 @@ class Query(graphene.ObjectType):
             return Plan.objects.filter((
                     Q(owner__id=user.id) |
                     Q(participating_plan__participant_user=profile)
-                ),
+            ),
                 (
                     Q(init_date__lte=today)
                 )
-            ).distinct()
+            ).distinct().order_by('-init_date', '-init_hour', '-end_hour')
         else:
             friend_ids = profile.friends.values_list('id', flat=True)
             return Plan.objects.filter((
@@ -190,9 +190,9 @@ class Query(graphene.ObjectType):
         if search_string:
             result = Plan.objects.filter(
                 (
-                    Q(owner__id=user.id) |
-                    Q(is_public=True) |
-                    Q(owner__id__in=friend_ids)
+                        Q(owner__id=user.id) |
+                        Q(is_public=True) |
+                        Q(owner__id__in=friend_ids)
                 ),
                 (
                         Q(title__icontains=search_string) |
