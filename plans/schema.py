@@ -118,6 +118,10 @@ class EditPlan(graphene.Mutation):
 
         plan = Plan.objects.get(pk=plan_id)
 
+        if plan.owner.id != user.id:
+            print('Error, not the same user')
+            raise Exception('MUST BE THE CREATOR TO DELETE THIS PLAN')
+
         if title: plan.title = title
         if description: plan.description = description
         if location: plan.location = location
