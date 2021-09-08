@@ -81,6 +81,58 @@ class CreatePlan(graphene.Mutation):
         return CreatePlan(plan=plan)
 
 
+class EditPlan(graphene.Mutation):
+    plan = graphene.Field(PlanType)
+
+    class Arguments:
+        plan_id = graphene.Int(required=True)
+        title = graphene.String(required=False)
+        description = graphene.String(required=False)
+        location = graphene.String(required=False)
+        init_date = graphene.Date(required=False)
+        init_hour = graphene.Time(required=False)
+        end_hour = graphene.Time(required=False)
+        max_participants = graphene.Int(required=False)
+        is_public = graphene.Boolean(required=False)
+        url_plan_picture = graphene.String(required=False)
+        max_participants = graphene.Int(required=False)
+
+    @staticmethod
+    def mutate(self,
+               info,
+               plan_id,
+               title,
+               description,
+               location,
+               init_date,
+               init_hour,
+               end_hour,
+               max_participants,
+               is_public=False,
+               url_plan_picture=""):
+        user = info.context.user
+
+        if user.is_anonymous:
+            print("Error, user not logged")
+            raise Exception('Must be logged to create a plan')
+
+        plan = Plan.objects.get(pk=plan_id)
+
+        if title: plan.title = title
+        if description: plan.description = description
+        if location: plan.location = location
+        if init_date: plan.init_date = init_date
+        if init_hour: plan.init_hour = init_hour
+        if end_hour: plan.end_hour = end_hour
+        if max_participants: plan.max_participants = max_participants
+        if is_public: plan.is_public = is_public
+        if url_plan_picture: plan.url_plan_picture = plan.url_plan_picture
+
+        plan.save()
+
+        return EditPlan(plan=plan)
+
+
 class DeletePlan(graphene.Mutation):
     ok = graphene.Boolean()
 
@@ -221,5 +273,6 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     create_plan = CreatePlan.Field()
+    edit_plan = EditPlan.Field()
     delete_plan = DeletePlan.Field()
     participate_in_plan = ParticipateInPlan.Field()
