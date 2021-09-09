@@ -130,7 +130,7 @@ class EditPlan(graphene.Mutation):
         if end_hour: plan.end_hour = end_hour
         if max_participants: plan.max_participants = max_participants
         if is_public: plan.is_public = is_public
-        if url_plan_picture: plan.url_plan_picture = plan.url_plan_picture
+        if url_plan_picture: plan.url_plan_picture = url_plan_picture
 
         plan.save()
 
