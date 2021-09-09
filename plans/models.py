@@ -10,8 +10,6 @@ class Plan(models.Model):
         get_user_model(),
         on_delete=models.CASCADE)
 
-    # TODO Add Participations
-
     # Attributes
     """Plan Title"""
     title = models.CharField(max_length=256, null=False)
