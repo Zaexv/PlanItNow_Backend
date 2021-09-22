@@ -261,6 +261,8 @@ class Query(graphene.ObjectType):
                 )
             )
         else:
+            recommendation = profile.get_recommended_plans()
+            recommendation_plans_ids = recommendation.values_list('plan', flat=True)
             result = Plan.objects.filter(
                 Q(owner__id=user.id) |
                 Q(is_public=True) |
@@ -270,8 +272,11 @@ class Query(graphene.ObjectType):
                 ),
                 (
                     Q(max_participants__gte=1)
-                )
-            )
+                ),
+            ).exclude(id__in=recommendation_plans_ids)
+            result = list(result)
+            for distance in recommendation:
+                result.insert(0, distance.plan)
         return result
 
 
