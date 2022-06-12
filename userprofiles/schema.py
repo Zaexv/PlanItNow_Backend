@@ -58,7 +58,7 @@ class Query(graphene.ObjectType):
         if info.context.user.is_anonymous:
             raise Exception("You must be logged to see your friends!")
         my_id = info.context.user.id
-        my_profile = UserProfile.objects.get(pk=my_id)
+        my_profile = UserProfile.objects.get(user__id=my_id)
         return my_profile.friends.all()
 
 
