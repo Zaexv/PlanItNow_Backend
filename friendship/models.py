@@ -1,6 +1,8 @@
-from userprofiles.models import UserProfile
-from django.db import models
 from enum import Enum
+
+from django.db import models
+
+from userprofiles.models import UserProfile
 
 
 class FriendRequestStatus(Enum):

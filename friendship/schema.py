@@ -1,9 +1,8 @@
-from friendship.models import FriendRequest
-from friendship.models import FriendRequestStatus
-from userprofiles.models import UserProfile
-
 import graphene
 from graphene_django import DjangoObjectType
+
+from friendship.models import FriendRequest, FriendRequestStatus
+from userprofiles.models import UserProfile
 
 
 class FriendRequestType(DjangoObjectType):

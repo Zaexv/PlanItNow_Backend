@@ -1,23 +1,25 @@
 """De momento este utils va a ser una forma de probar scripts. Ya lo cambiaré más adelanteG"""
 
-from deep_translator import GoogleTranslator
-
-from plans.models import Plan
-### PLN ###
-
-import requests
-import numpy as np
-import emoji
-import regex
 import string
-import nltk
 from collections import Counter
 
+import emoji
+import nltk
+import numpy as np
+import regex
+import requests
+from deep_translator import GoogleTranslator
 from nltk.corpus import stopwords
-from nltk.corpus import words
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet as wn
+from nltk.corpus import words
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+
+from plans.models import Plan
+
+### PLN ###
+
+
 
 
 

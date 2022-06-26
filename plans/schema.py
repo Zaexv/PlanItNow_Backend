@@ -1,12 +1,11 @@
-import graphene
-
 from datetime import date
-from graphene_django import DjangoObjectType
-from plans.models import Plan
-from plans.models import PlanParticipation
 
-from userprofiles.models import UserProfile
+import graphene
 from django.db.models import Q
+from graphene_django import DjangoObjectType
+
+from plans.models import Plan, PlanParticipation
+from userprofiles.models import UserProfile
 
 
 class PlanType(DjangoObjectType):
