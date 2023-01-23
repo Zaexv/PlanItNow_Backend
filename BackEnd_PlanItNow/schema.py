@@ -1,9 +1,10 @@
 import graphene
 import graphql_jwt
-import plans.schema
-import users.schema
+
 import friendship.schema
+import plans.schema
 import userprofiles.schema
+import users.schema
 
 
 class Query(plans.schema.Query,

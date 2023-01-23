@@ -1,9 +1,9 @@
-from django.contrib.auth import get_user_model
-from userprofiles.schema import UserProfileType
-from userprofiles.models import UserProfile
-
 import graphene
+from django.contrib.auth import get_user_model
 from graphene_django import DjangoObjectType
+
+from userprofiles.models import UserProfile
+from userprofiles.schema import UserProfileType
 
 
 class UserType(DjangoObjectType):
