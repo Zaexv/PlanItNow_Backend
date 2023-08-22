@@ -50,32 +50,36 @@ class CreatePlan(graphene.Mutation):
         max_participants = graphene.Int(required=False)
 
     @staticmethod
-    def mutate(self,
-               info,
-               title,
-               description,
-               location,
-               init_date,
-               init_hour,
-               end_hour,
-               max_participants=5,
-               is_public=False,
-               url_plan_picture=""):
+    def mutate(
+            self,
+            info,
+            title,
+            description,
+            location,
+            init_date,
+            init_hour,
+            end_hour,
+            max_participants=5,
+            is_public=False,
+            url_plan_picture=""
+    ):
         user = info.context.user
 
         if user.is_anonymous:
             print("Error, user not logged")
             raise Exception('Must be logged to create a plan')
 
-        plan = Plan(title=title,
-                    description=description,
-                    location=location,
-                    init_date=init_date,
-                    init_hour=init_hour,
-                    end_hour=end_hour,
-                    max_participants=max_participants,
-                    is_public=is_public,
-                    url_plan_picture=url_plan_picture)
+        plan = Plan(
+            title=title,
+            description=description,
+            location=location,
+            init_date=init_date,
+            init_hour=init_hour,
+            end_hour=end_hour,
+            max_participants=max_participants,
+            is_public=is_public,
+            url_plan_picture=url_plan_picture
+        )
         plan.owner = user
         plan.save()
         return CreatePlan(plan=plan)
