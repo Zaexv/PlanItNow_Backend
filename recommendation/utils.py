@@ -1,29 +1,24 @@
 """De momento este utils va a ser una forma de probar scripts. Ya lo cambiaré más adelanteG"""
 from datetime import date
 
-from deep_translator import GoogleTranslator
 from deep_translator.exceptions import NotValidPayload
 
-from plans.models import Plan
-from recommendation.models import Lemma
-from recommendation.models import UserDistance
-
-from userprofiles.models import UserProfile
 ### PLN ###
 
-import requests
-import numpy as np
-import emoji
-import regex
-import string
-import nltk
-from collections import Counter
 
-from nltk.corpus import stopwords
+import nltk
+
+from deep_translator import GoogleTranslator
+
 from nltk.corpus import words
-from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-from nltk.corpus import wordnet as wn
+from nltk.tokenize import word_tokenize
+
+from plans.models import Plan
+
+### PLN ###
+from recommendation.models import Lemma, UserDistance
+from userprofiles.models import UserProfile
 
 
 def translate_all_plans():

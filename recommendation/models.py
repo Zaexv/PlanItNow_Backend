@@ -1,4 +1,5 @@
 from django.db import models
+
 from plans.models import Plan
 from userprofiles.models import UserProfile
 
